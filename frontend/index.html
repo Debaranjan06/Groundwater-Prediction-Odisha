@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The app ships its own light + dark themes: stop browser auto-dark / Dark Reader from repainting it -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="darkreader-lock" />
+    <title>Bhujal · Odisha Groundwater Observatory</title>
+    <meta name="description" content="Bhujal: groundwater depth records, maps and machine-learning forecasts for monitoring wells in Odisha." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <script>
+      // Apply the saved/system theme before first paint to avoid a light flash.
+      try {
+        var t = localStorage.getItem("bhujal-theme");
+        if (t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches) document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

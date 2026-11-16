@@ -1,0 +1,3 @@
+# Optional: adds the LSTM as a fifth model. CPU is enough (training takes a few minutes).
+-r requirements.txt
+tensorflow>=2.16
