@@ -8,6 +8,7 @@ import pandas as pd
 
 from app.config import MODEL_DIR
 from app.db import db
+from ml import portable
 from ml.features import ENV_COLS, MODEL_FILES, TARGET, add_derived, season, to_inputs
 
 _cache = {}
@@ -21,7 +22,9 @@ def _meta():
         _cache.clear()
         with open(path) as f:
             _cache["meta"] = json.load(f)
-        _cache["scalers"] = joblib.load(os.path.join(MODEL_DIR, "scalers.joblib"))
+        port = portable.load(MODEL_DIR)  # NumPy-only copies (used on the serverless deployment)
+        _cache["portable"] = port[1] if port else {}
+        _cache["scalers"] = port[0] if port else joblib.load(os.path.join(MODEL_DIR, "scalers.joblib"))
         _cache["meta_mtime"] = os.path.getmtime(path)
     return _cache["meta"], _cache["scalers"]
 
@@ -29,6 +32,9 @@ def _meta():
 def _model(name):
     if name not in MODEL_FILES:
         raise ValueError(f"Unknown model: {name}")
+    _meta()
+    if name in _cache["portable"]:
+        return _cache["portable"][name]
     if name not in _cache:
         path = os.path.join(MODEL_DIR, MODEL_FILES[name])
         if not os.path.exists(path):

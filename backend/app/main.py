@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pymongo.errors import ConnectionFailure
 
 from . import auth, dashboard, data, predict
 from .config import CORS_ORIGINS
@@ -23,6 +25,11 @@ app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials
 
 for r in (auth.router, data.router, dashboard.router, predict.router):
     app.include_router(r)
+
+
+@app.exception_handler(ConnectionFailure)
+async def db_unreachable(request: Request, exc: ConnectionFailure):
+    return JSONResponse(status_code=503, content={"detail": "The database is unreachable. Please try again later."})
 
 
 @app.get("/api/health")

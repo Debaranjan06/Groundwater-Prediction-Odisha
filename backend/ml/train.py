@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler
 
 from app.config import MODEL_DIR
 from app.db import db, ensure_indexes
-from ml import lstm
+from ml import lstm, portable
 from ml.features import ENV_COLS, MODEL_FILES, TARGET, WINDOW, add_derived, make_samples, row_features
 
 SEED = 42
@@ -167,6 +167,7 @@ def main():
         json.dump({"features": feats, "env": env, "window": args.window, "medians": medians,
                    "cutoff_by_type": {t: str(c.date()) for t, c in cutoffs.items()},
                    "trained_at": now.isoformat()}, f, indent=2)
+    print("Exported NumPy copies for deployment:", portable.export(MODEL_DIR))
     print("Done. Models saved to", MODEL_DIR)
 
 

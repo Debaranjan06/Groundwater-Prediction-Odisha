@@ -1,0 +1,24 @@
+{
+  "features": [
+    "depth_mbgl",
+    "rainfall_mm",
+    "temperature_c",
+    "month_sin",
+    "month_cos",
+    "gap_days"
+  ],
+  "env": [
+    "rainfall_mm",
+    "temperature_c"
+  ],
+  "window": 4,
+  "medians": {
+    "rainfall_mm": 0.06,
+    "temperature_c": 25.47
+  },
+  "cutoff_by_type": {
+    "manual": "2019-01-10",
+    "telemetric": "2025-05-14"
+  },
+  "trained_at": "2026-11-11T08:14:58.859982+00:00"
+}

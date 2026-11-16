@@ -40,7 +40,9 @@ wheels/
 !.env.example
 
 # App data & models
-backend/models_store/
+backend/models_store/*
+!backend/models_store/portable.npz
+!backend/models_store/meta.json
 *.log
 
 # Editor & OS files
